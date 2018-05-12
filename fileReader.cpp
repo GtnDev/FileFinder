@@ -29,7 +29,7 @@ bool fileReader::isMatch(const std::string& text, const std::string& pattern)
     return std::string::npos != text.find(pattern);
 }
 
-bool fileReader::grepFile(const char fileName[255])
+bool fileReader::grepFile(const std::string fileName)
 {
     bool matching = false;
     std::ifstream fichier(fileName);
