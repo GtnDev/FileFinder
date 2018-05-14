@@ -1,7 +1,3 @@
-//
-// Created by gtn on 11/05/18.
-//
-
 #include "fileReader.h"
 #include <iostream>
 #include <fstream>
@@ -12,6 +8,7 @@
 
 fileReader::fileReader() : m_path("/"), m_text(), m_pattern(), m_fileName() {}
 
+// Retourne un tableau contenant tous les fichier du répertoire cible
 std::vector<std::string> fileReader::getAllFilesRecursive(const std::string& path)
 {
 
@@ -24,12 +21,16 @@ std::vector<std::string> fileReader::getAllFilesRecursive(const std::string& pat
 
     return file_names ;
 }
+
+// Compare la ligne envoyé avec le pattern et retourne un booléen
 bool fileReader::isMatch(const std::string& text, const std::string& pattern)
 {
+    //TODO changer les occurences trouvées pour qu'elles correspondent au mot exact
     return std::string::npos != text.find(pattern);
 }
 
-bool fileReader::grepFile(const std::string fileName)
+// Ouvre le fichier cible et le lis ligne par ligne
+bool fileReader::grepFile(std::string fileName)
 {
     bool matching = false;
     std::ifstream fichier(fileName);
@@ -37,10 +38,12 @@ bool fileReader::grepFile(const std::string fileName)
     if(fichier)
     {
         std::string line;
+        std::string pattern = "phrase";
+        pattern += " ";
 
-        while(getline(fichier, line))
+        while(getline(fichier, line)) // Envoie la ligne a la methode isMatch
         {
-            if (isMatch(line, "phrase")) {
+            if (isMatch(line, pattern)) {
                 std::cout << line << std::endl;
                 matching = true;
             }

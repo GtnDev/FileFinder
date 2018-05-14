@@ -1,3 +1,7 @@
+//TODO  - Trouver les mots exact.
+//TODO  - Envoyer les noms entiers des fichiers trouvé dans un fichier temporaire ou une liste.
+//TODO  - Faire une copie des fichiers trouvés.
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -14,8 +18,10 @@ int main()
 {
     string inputDirectory = "";
 
-    cout << "Enter the directory where you want to find out matching case :\n>";
-    getline(cin, inputDirectory);
+    while (inputDirectory == "") {
+        cout << "Enter the directory where you want to find out matching case :\n>";
+        getline(cin, inputDirectory);
+    }
 
     fileReader rf;
 
