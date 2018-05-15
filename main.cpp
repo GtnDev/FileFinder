@@ -1,4 +1,4 @@
-//TODO  - Récupérer les mots clefs a partir d'un fichier.
+//TODO  - Parser les mots clefs récupérés.
 //TODO  - Trouver les mots exact.
 //TODO  - Envoyer les noms entiers des fichiers trouvé dans un fichier temporaire ou une liste.
 //TODO  - Faire une copie des fichiers trouvés.
@@ -11,32 +11,10 @@
 #include <array>
 #include <experimental/filesystem>
 #include "fileReader.h"
+#include "keywords.h"
 
 namespace fs = std::experimental::filesystem;
 using namespace std;
-
-vector<string> getKeyWords(const string& fileLocation) {
-    std::vector<std::string> key_words;
-    std::ifstream file(fileLocation);
-
-    if(file)
-    {
-        std::string line;
-        std::string pattern = "phrase";
-        pattern += " ";
-
-        while(getline(file, line)) // Envoie la ligne a la methode isMatch
-        {
-            key_words.push_back(line);
-        }
-    }
-    else
-    {
-        std::cout << "ERROR: Impossible to read file." << std::endl;
-    }
-
-    return key_words;
-}
 
 int main()
 {
@@ -53,7 +31,9 @@ int main()
         getline(cin, keyWorksFile);
     }
 
-    vector<string> keyWords = getKeyWords(keyWorksFile);
+    keywords kw;
+
+    vector<string> keyWords = kw.getKeyWords(keyWorksFile);
     for( const auto& fn : keyWords ) {
         cout << fn << '\n' ;
     }
