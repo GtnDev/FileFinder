@@ -6,7 +6,7 @@
 #include <chrono>
 #include <experimental/filesystem>
 
-fileReader::fileReader() : m_path("/"), m_text(), m_pattern(), m_fileName() {}
+fileReader::fileReader() : m_path("/"), m_text(), m_pattern(), m_fileName(), m_keywords() {}
 
 // Retourne un tableau contenant tous les fichier du répertoire cible
 std::vector<std::string> fileReader::getAllFilesRecursive(const std::string& path)
@@ -30,7 +30,7 @@ bool fileReader::isMatch(const std::string& text, const std::string& pattern)
 }
 
 // Ouvre le fichier cible et le lis ligne par ligne
-bool fileReader::grepFile(std::string fileName)
+bool fileReader::grepFile(std::string fileName, std::vector<std::string> keywords)
 {
     bool matching = false;
     std::ifstream fichier(fileName);
@@ -43,9 +43,11 @@ bool fileReader::grepFile(std::string fileName)
 
         while(getline(fichier, line)) // Envoie la ligne a la methode isMatch
         {
-            if (isMatch(line, pattern)) {
-                std::cout << line << std::endl;
-                matching = true;
+            for( const auto& fn : keywords ) {
+                if (isMatch(line, fn)) {
+                    std::cout << fn << line << std::endl;
+                    matching = true;
+                }
             }
         }
 
