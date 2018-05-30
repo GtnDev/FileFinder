@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <regex>
 #include <chrono>
 #include <experimental/filesystem>
 
@@ -26,7 +27,10 @@ std::vector<std::string> fileReader::getAllFilesRecursive(const std::string& pat
 bool fileReader::isMatch(const std::string& text, const std::string& pattern)
 {
     //TODO changer les occurences trouvées pour qu'elles correspondent au mot exact
-    return std::string::npos != text.find(pattern);
+    std::regex r("("+pattern+")(.*)"); // the pattern \b matches a word boundary
+    std::smatch m;
+
+    return std::regex_search(text, m, r);
 }
 
 // Ouvre le fichier cible et le lis ligne par ligne
@@ -38,17 +42,17 @@ bool fileReader::grepFile(std::string fileName, std::vector<std::string> keyword
     if(fichier)
     {
         std::string line;
-        std::string pattern = "phrase";
-        pattern += " ";
 
         while(getline(fichier, line)) // Envoie la ligne a la methode isMatch
         {
             for( const auto& fn : keywords ) {
                 if (isMatch(line, fn)) {
-                    std::cout << fn << line << std::endl;
+                    std::cout << fn << '\n' << line << std::endl;
                     matching = true;
                 }
+                if (matching) break;
             }
+            if (matching) break;
         }
 
         return matching;

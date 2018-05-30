@@ -1,5 +1,6 @@
 //TODO  - Parser les mots clefs récupérés.
 //TODO  - Trouver les mots exact.
+//TODO  - Eviter les redondances dans les fichiers trouvés.
 //TODO  - Envoyer les noms entiers des fichiers trouvé dans un fichier temporaire ou une liste.
 //TODO  - Faire une copie des fichiers trouvés.
 
@@ -20,6 +21,8 @@ int main()
 {
     string inputDirectory = "";
     string keyWorksFile = "";
+    vector<string> matchingFiles;
+
 
     while (inputDirectory == "") {
         cout << "Enter the directory where you want to find out matching case :\n>";
@@ -42,9 +45,11 @@ int main()
 
     const vector<string> file_list = rf.getAllFilesRecursive(inputDirectory) ;
 
+    ofstream tempFile("tempMactchingFiles.txt", ios::out | ios::trunc);
+
     for( const auto& fn : file_list ) {
         if (rf.grepFile(fn, keyWords)) {
-            cout << fn << '\n' ;
+            tempFile << fn << "\n";
         }
     }
 
